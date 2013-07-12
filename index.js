@@ -1107,7 +1107,9 @@ Request.prototype.oauth = function (_oauth) {
   if (!form) form = {}
   var oa = {}
   for (var i in form) oa[i] = form[i]
-  for (var i in _oauth) oa['oauth_'+i] = _oauth[i]
+  for (var i in _oauth)
+    if(i === 'consumer_key' || i === 'consumer_secret')
+      oa['oauth_'+i] = _oauth[i]
   if (!oa.oauth_version) oa.oauth_version = '1.0'
   if (!oa.oauth_timestamp) oa.oauth_timestamp = Math.floor( Date.now() / 1000 ).toString()
   if (!oa.oauth_nonce) oa.oauth_nonce = uuid().replace(/-/g, '')
@@ -1133,9 +1135,15 @@ Request.prototype.oauth = function (_oauth) {
     }
   }
   oa.oauth_timestamp = timestamp
-  this.headers.Authorization =
-    'OAuth '+Object.keys(oa).sort().map(function (i) {return i+'="'+oauth.rfc3986(oa[i])+'"'}).join(',')
-  this.headers.Authorization += ',oauth_signature="' + oauth.rfc3986(signature) + '"'
+  if(_oauth.append_body) {
+    Object.keys(oa).map(function(i){form[i] = oa[i]})
+    form['oauth_signature'] = signature
+    this.qs(form)
+  } else {
+    this.headers.Authorization =
+      'OAuth '+Object.keys(oa).sort().map(function (i) {return i+'="'+oauth.rfc3986(oa[i])+'"'}).join(',')
+    this.headers.Authorization += ',oauth_signature="' + oauth.rfc3986(signature) + '"'
+  }
   return this
 }
 Request.prototype.jar = function (jar) {
