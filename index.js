@@ -1108,7 +1108,7 @@ Request.prototype.oauth = function (_oauth) {
   var oa = {}
   for (var i in form) oa[i] = form[i]
   for (var i in _oauth)
-    if(i === 'consumer_key' || i === 'consumer_secret')
+    if(i !== 'append')
       oa['oauth_'+i] = _oauth[i]
   if (!oa.oauth_version) oa.oauth_version = '1.0'
   if (!oa.oauth_timestamp) oa.oauth_timestamp = Math.floor( Date.now() / 1000 ).toString()
@@ -1135,7 +1135,7 @@ Request.prototype.oauth = function (_oauth) {
     }
   }
   oa.oauth_timestamp = timestamp
-  if(_oauth.append_body) {
+  if(_oauth.append === 'body') {
     Object.keys(oa).map(function(i){form[i] = oa[i]})
     form['oauth_signature'] = signature
     this.qs(form)
