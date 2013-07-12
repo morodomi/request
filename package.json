@@ -7,14 +7,14 @@
     "util",
     "utility"
   ],
-  "version": "2.22.1",
-  "author": "Mikeal Rogers <mikeal.rogers@gmail.com>",
+  "version": "2.22.2",
+  "author": "Masahiro Morodomi<morodomi@gmail.com>",
   "repository": {
     "type": "git",
-    "url": "http://github.com/mikeal/request.git"
+    "url": "http://github.com/morodomi/request.git"
   },
   "bugs": {
-    "url": "http://github.com/mikeal/request/issues"
+    "url": "http://github.com/morodomi/request/issues"
   },
   "engines": [
     "node >= 0.8.0"
